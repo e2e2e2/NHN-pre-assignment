@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<style>
+    .target{
+    background-color:red;
+    float:right;
+    }
+    .target:hover{
+    text-size:30px;
+    }
+    .idle{
+    background-color:green;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <ul>
+        <li th:each="dto, state : ${list}">
+            <span th:if="${dto.sno % 5 == 0}" th:text="${state.index + '---------' +dto}"></span>
+            <span th:unless="${dto.sno % 5 == 0}" th:text="${dto}"></span>
+
+        </li>
+    </ul>
+
+
+    <ul>
+        <li th:each="dto, state : ${list}">
+            <span th:class="${dto.sno % 5 == 0}?'target':'idle'" th:text="${dto}"></span>
+
+        </li>
+    </ul>
+</body>
+</html>

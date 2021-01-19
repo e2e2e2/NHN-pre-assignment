@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<style>
+    .target{
+    background-color:red;
+    float:right;
+    }
+    .target:hover{
+    text-size:30px;
+    }
+    .idle{
+    background-color:green;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1 th:text="${result}"></h1>
+    <h1 th:text="${dto}"></h1>
+
+    <script th:inline="javascript">
+
+        var msg = [[${result}]];
+        var dto = [[${dto}]];
+    </script>
+</body>
+</html>
