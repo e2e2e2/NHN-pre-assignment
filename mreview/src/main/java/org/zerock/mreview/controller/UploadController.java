@@ -107,6 +107,7 @@ public class UploadController {
         ResponseEntity<byte[]> result = null;
 
         try{
+            System.out.println("----------path-----" + fileName);
             String srcFileName = URLDecoder.decode(fileName,"UTF-8");
 
             log.info("fileName: "+srcFileName);
