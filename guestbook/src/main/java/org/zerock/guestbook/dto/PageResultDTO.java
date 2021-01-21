@@ -50,6 +50,5 @@ public class PageResultDTO<DTO, EN> {
         next = totalPage > tempEnd;
 
         pageList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
-
     }
 }

@@ -8,8 +8,12 @@
 
         <form action="/guestbook/modify" method="post">
 
+            <input type="hidden" name="page" th:value="${requestDTO.page}">
+            <input type="hidden" name="type" th:value="${requestDTO.type}">
+            <input type="hidden" name="keyword" th:value="${requestDTO.keyword}">
+
             <div class="form-group">
-                <label>GNO</label>
+                <label>Gno</label>
                 <input type="text" class="form-control" name="gno" th:value="${dto.gno}" readonly>
             </div>
             <div class="form-group">
@@ -24,35 +28,69 @@
                 <label>Writer</label>
                 <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
             </div>
-
+`
 
             <div class="form-group">
                 <label>RegDate</label>
-                <input type="text" class="form-control" th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+                <input type="text" class="form-control" th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>`
             </div>
+
             <div class="form-group">
                 <label>ModDate</label>
                 <input type="text" class="form-control" th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
             </div>
 
-
-            <a th:href="@{/guestbook/modify(gno= ${dto.gno}, page=${requestDTO.page})}">
-                <button type="button" class="btn btn-primary">Modify</button>
-            </a>
-
-
-            <a th:href="@{/guestbook/list(page=${requestDTO.page})}">
-                <button type="button" class="btn btn-info">List</button>
-            </a>
-
-
-
         </form>
 
 
-        <button type="button" class="btn btn-primary">Modify</button>
-        <button type="button" class="btn btn-info">List</button>
-        <button type="button" class="btn btn-danger">Remove</button>
+        <button type="button" class="btn btn-primary modifyBtn">Modify</button>
+        <button type="button" class="btn btn-info listBtn">List</button>
+        <button type="button" class="btn btn-danger removeBtn">Remove</button>
+
+        <script th:inline="javascript">
+
+            var actionForm = $("form");
+
+            $(".removeBtn").click(function(){
+
+                actionForm
+                    .attr("action", "/guestbook/remove")
+                    .attr("method", "post");
+
+                actionForm.submit();
+            });
+
+            $(".modifyBtn").click(function() {
+                if(!confirm("수정하시겠습니까?")){
+                    return;
+                }
+
+                actionForm
+                    .attr("action", "/guestbook/modify")
+                    .attr("method", "post")
+                    .submit();
+                });
+
+            $(".listBtn").click(function(){
+                //var pageInfo = $("input[name='page']");
+                var page = $("input[name='page']");
+                var type = $("input[name='type']");
+                var keyword = $("input[name='keyword']");
+
+                actionForm.empty();
+
+                actionForm.append(page);
+                actionForm.append(type);
+                actionForm.append(keyword);
+
+                actionForm
+                    .attr("action", "/guestbook/list")
+                    .attr("method", "get");
+
+                actionForm.submit();
+            });
+
+        </script>
 
 
     </th:block>
