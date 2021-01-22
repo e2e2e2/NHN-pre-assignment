@@ -39,11 +39,17 @@ public class MovieController {
 
     }
 
-    @GetMapping("/list")
+    @GetMapping({"/list"})
     public void list(PageRequestDTO pageRequestDTO, Model model){
         log.info("pageRequestDTO: " + pageRequestDTO);
 
         model.addAttribute("result", movieService.getList(pageRequestDTO));
+    }
+
+
+    @GetMapping({"/"})
+    public String home(PageRequestDTO pageRequestDTO, Model model){
+        return "redirect:/movie/list";
     }
 
 

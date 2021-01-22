@@ -59,6 +59,7 @@ public class MovieServiceImpl implements MovieService {
                 (List<MovieImage>)(Arrays.asList((MovieImage)arr[1])),
                 (Double) arr[2],
                 (Long) arr[3])
+
         );
 
         return new PageResultDTO<>(result, fn);

@@ -9,7 +9,7 @@ import org.zerock.mreview.entity.Movie;
 import java.util.List;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
-    @Query("select m, mi, avg(coalesce(r.grade,0)),  count(r) " +
+    @Query("select m, mi, avg(coalesce(r.grade,0)),  count(distinct r) " +
             "from Movie m " + "left outer join MovieImage mi on mi.movie = m " +
             "left outer join Review r " +
             "on r.movie = m group by m")

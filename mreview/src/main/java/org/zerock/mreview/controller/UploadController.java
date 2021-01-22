@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.zerock.mreview.dto.PageRequestDTO;
 import org.zerock.mreview.dto.UploadResultDTO;
 
 import java.io.File;
@@ -101,31 +103,30 @@ public class UploadController {
     }
 
 
+
     @GetMapping("/display")
-    public ResponseEntity<byte[]> getFile(String fileName){
+
+    public ResponseEntity<byte[]> getFile(String fileName, String size) {
 
         ResponseEntity<byte[]> result = null;
 
-        try{
-            System.out.println("----------path-----" + fileName);
-            String srcFileName = URLDecoder.decode(fileName,"UTF-8");
+        try {
+            String srcFileName = URLDecoder.decode(fileName, "UTF-8");
+            log.info("fileName: " + srcFileName);
+            File file = new File(uploadPath +File.separator+ srcFileName);
 
-            log.info("fileName: "+srcFileName);
+            if(size != null && size.equals("1")){
+                file = new File(file.getParent(), file.getName().substring(2));
+            }
 
-            File file = new File(uploadPath + File.separator + srcFileName);
-
-            log.info("file: "+ file);
-
+            log.info("file:"+ file);
             HttpHeaders header = new HttpHeaders();
-
             header.add("Content-Type", Files.probeContentType(file.toPath()));
 
-            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-
-
+            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),
+                    header, HttpStatus.OK);
         } catch (Exception e) {
             log.error(e.getMessage());
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return result;
@@ -152,4 +153,5 @@ public class UploadController {
             return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

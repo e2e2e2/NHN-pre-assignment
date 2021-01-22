@@ -37,7 +37,7 @@
 
         <div class="uploadResult">
             <ul>
-                <li th:each="movieImage: ${dto.imageDTOList}">
+                <li th:each="movieImage: ${dto.imageDTOList}" th:data-file="${movieImage.getThumbnailURL()}">
                     <img th:if="${movieImage.path != null}" th:src="|/display?fileName=${movieImage.getThumbnailURL()}|">
                 </li>
             </ul>
@@ -183,8 +183,15 @@
                             console.log(review);
                             str +=' <div class="card-body" data-reviewnum='+review.
                             reviewnum+' data-mid=' +review.mid+'>';
-                            str +=' <h5 class="card-title">' +review.text+' <span>' + review.grade+'</span></h5>';
-                            str +=' <h6 class="card-subtitle mb-2 text-muted">' +review.nickname+'</h6>';
+                            str +=' <h5 class="card-title">' +review.text+' <span style="display:none;">' + review.grade+'</span></h5>';
+
+                            str +='<h5>'
+                            for (var i = 0; i < review.grade; i++) {
+                                str +='⭐';
+                            }
+                            str +='</h5>'
+
+                            str +=' <h6 class="card-subtitle mb-2 text-muted">' + review.nickname +'</h6>';
                             str +=' <p class="card-text">'+ formatTime(review.regDate)+'</p>';
                             str +=' </div>';
                         });
@@ -246,6 +253,14 @@
                             }
                         })
                     reviewModal.modal('hide');
+                });
+
+
+                $(".uploadResult li").click(function() {
+                    var file = $(this).data('file');
+                    console.log(file);
+                    $('.imageModal .modal-body').html("<img style='width:100%' src='/display?fileName="+file+"&size=1'>")
+                    $(".imageModal").modal("show");
                 });
             });
 
